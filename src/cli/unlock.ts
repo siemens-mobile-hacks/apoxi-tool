@@ -1,7 +1,7 @@
 import { AppCommand, onCleanup } from "#src/utils/command.js";
 import { CLIBaseOptions } from "#src/cli.js";
 import { connectDWD, disconnectDWD } from "#src/utils/serial.js";
-import { isApoxiBootUnlocked, unlockApoxiBootloader } from "@sie-js/apoxi-tool-core";
+import { isApoxiBootUnlocked, unlockApoxiBootloader } from "#src/lib/dwd.js";
 import inquirer from "inquirer";
 import chalk from "chalk";
 

@@ -1,8 +1,8 @@
 import { DWD } from "@sie-js/serial";
 import { sprintf } from "sprintf-js";
-import unlockerElf from "./data/unlocker.elf.js";
+import unlockerElf from "#src/data/unlocker.elf.js";
 import { loadELF } from "@sie-js/creampie";
-import { retryAsyncOnError } from "./utils/retry.js";
+import { retryAsyncOnError } from "#src/utils/retry.js";
 
 const TCM_START = 0xFFFF0000;
 const PRAM_IRQ_HANDLER = TCM_START + 0x38;
