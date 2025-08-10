@@ -5,6 +5,9 @@
 	"bin": {
 		"apoxi-tool": "./dist/src/cli.js"
 	},
+	"repository": {
+		"url": "git+https://github.com/siemens-mobile-hacks/apoxi-tool.git"
+	},
 	"type": "module",
 	"main": "dist/src/index.js",
 	"types": "dist/src/index.d.ts",

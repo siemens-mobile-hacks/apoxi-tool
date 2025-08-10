@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { program } from "commander";
 import { cliListMemory, cliReadAllMemory, cliReadMemory } from "./cli/memory.js";
 import { createAppCommand } from "./utils/command.js";
