@@ -1,4 +1,4 @@
-[![NPM Version](https://img.shields.io/npm/v/%40sie-js%2Fsiemens-memory-dumper)](https://www.npmjs.com/package/@sie-js/siemens-memory-dumper)
+[![NPM Version](https://img.shields.io/npm/v/%40sie-js%2Fapoxi-tool)](https://www.npmjs.com/package/@sie-js/apoxi-tool)
 
 # SUMMARY
 
