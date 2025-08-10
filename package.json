@@ -33,7 +33,7 @@
 		"typescript": "^5.9.2"
 	},
 	"imports": {
-		"#src/*": "./src/*"
+		"#src/*": "./dist/src/*"
 	},
 	"dependencies": {
 		"@sie-js/creampie": "^1.0.2",
