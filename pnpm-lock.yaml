@@ -12,8 +12,8 @@ importers:
         specifier: ^1.0.2
         version: 1.0.2
       '@sie-js/serial':
-        specifier: ^1.1.9
-        version: 1.1.9(@serialport/stream@13.0.0)
+        specifier: ^1.1.10
+        version: 1.1.10(@serialport/stream@13.0.0)
       '@types/debug':
         specifier: ^4.1.12
         version: 4.1.12
@@ -421,8 +421,8 @@ packages:
   '@sie-js/creampie@1.0.2':
     resolution: {integrity: sha512-ljJxZI8lQ58nZNePrdnWoLWfDllk4xZEm2lCqpXUaZ5fyf7qBWsBh7tDWD8usIdkDKzKUTySpW9vaLaCm6t2BA==}
 
-  '@sie-js/serial@1.1.9':
-    resolution: {integrity: sha512-iqMvHTdB5mdRM4KyJGAMcthf9AJYOc7vAb/DZFzlj9mJTShuZtU5HH3LwrtJUmLt4HXV3YAOiLVOwxJgP72vxA==}
+  '@sie-js/serial@1.1.10':
+    resolution: {integrity: sha512-X4V7zcJ+DUmUPHsChvzznTXiHSLfkTUfGPVeFG/eu5ifKcCPNIqkZ4RGwCQ5axj0l+XPdWcvNyqkNO++90pRkQ==}
     peerDependencies:
       '@serialport/stream': ^13.0.0
 
@@ -962,7 +962,7 @@ snapshots:
 
   '@sie-js/creampie@1.0.2': {}
 
-  '@sie-js/serial@1.1.9(@serialport/stream@13.0.0)':
+  '@sie-js/serial@1.1.10(@serialport/stream@13.0.0)':
     dependencies:
       '@serialport/stream': 13.0.0
       debug: 4.4.1

@@ -11,10 +11,21 @@ Works on all major operating systems: Linux, macOS, and Windows.
 
 # INSTALL
 
+### OSX & Linux
 1. Install the latest version of [Node.js](https://nodejs.org/en/download/).
 2. Install the package:
 
    ```bash
+   npm install -g @sie-js/apoxi-tool@latest
+   ```
+
+### Windows
+1. Find and install USB drivers for your phone.
+2. Install scoop: https://scoop.sh/
+3. Run in PowerShell:
+   ```
+   scoop bucket add main
+   scoop install main/nodejs
    npm install -g @sie-js/apoxi-tool@latest
    ```
 

@@ -30,7 +30,7 @@
 	},
 	"dependencies": {
 		"@sie-js/creampie": "^1.0.2",
-		"@sie-js/serial": "^1.1.9",
+		"@sie-js/serial": "^1.1.10",
 		"@types/debug": "^4.1.12",
 		"chalk": "^5.5.0",
 		"cli-progress": "^3.12.0",
