@@ -15,8 +15,10 @@
 		"./dist/src/*"
 	],
 	"scripts": {
-		"build": "tsc",
-		"watch": "tsc -w",
+		"build": "tsc -p tsconfig.json",
+		"watch": "tsc -w -p tsconfig.json",
+		"build:all": "pnpm -r run build",
+		"watch:all": "pnpm -r run watch",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [
@@ -36,6 +38,7 @@
 		"#src/*": "./dist/src/*"
 	},
 	"dependencies": {
+		"@sie-js/apoxi-tool-core": "workspace:*",
 		"@sie-js/creampie": "^1.0.2",
 		"@sie-js/serial": "^1.1.10",
 		"@types/debug": "^4.1.12",
