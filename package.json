@@ -1,6 +1,6 @@
 {
 	"name": "@sie-js/apoxi-tool",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "CLI tools for APOXI phones.",
 	"bin": {
 		"apoxi-tool": "./dist/src/cli.js"
