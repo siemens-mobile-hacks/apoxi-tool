@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-const elfFile = `${import.meta.dirname}/../../../pmb887x-emu/bsp/examples/apoxi_open_boot/build/app.elf`;
+const elfFile = `${import.meta.dirname}/../../../pmb887x-dev/examples/apoxi_open_boot/build/app.elf`;
 const binary = fs.readFileSync(elfFile);
 
 fs.writeFileSync(

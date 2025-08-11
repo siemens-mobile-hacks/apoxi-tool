@@ -8,7 +8,7 @@ export async function retryAsync<T>(callback: () => Promise<T>, options: { max: 
 	return lastResult!;
 }
 
-export async function retryAsyncOnError(callback: () => Promise<void>, options: { max: number }) {
+export async function retryAsyncOnError(callback: () => Promise<void>, options: { max: number, delay?: number }) {
 	let lastError: unknown;
 	for (let i = 0; i < options.max; i++) {
 		try {
@@ -16,6 +16,8 @@ export async function retryAsyncOnError(callback: () => Promise<void>, options: 
 			return;
 		} catch (e) {
 			lastError = e;
+			if (options.delay)
+				await new Promise((resolve) => setTimeout(resolve, options.delay));
 		}
 	}
 	throw lastError;

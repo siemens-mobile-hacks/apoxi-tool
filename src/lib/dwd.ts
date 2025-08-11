@@ -57,10 +57,13 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 	options.debug(sprintf("Boot mode: %08X", bootMode));
 
 	options.debug(sprintf("Ram: %08X, %dM", ramAddr, ramSize / 1024 / 1024));
-	options.debug("Searching empty ram block....");
+	options.debug("Searching empty ram block.... (this may take a while)");
 
 	let emptyRamBlock = 0;
 	for (let i = ramAddr; i < ramAddr + ramSize; i += 256 * 1024) {
+		if ((i % (1024 * 1024)) == 0)
+			options.debug(sprintf("RAM scan progress: %d Mb / %d Mb", (i - ramAddr) / 1024 / 1024, ramSize / 1024 / 1024));
+
 		const blockStart = await dwd.readMemory(i, 230);
 		if (blockStart.buffer.every((v) => v == 0)) {
 			const fullBlock = await dwd.readMemory(i, 256 * 1024);
@@ -103,21 +106,24 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 		let responseCode: number = PatchResponseCode.UNKNOWN;
 		let responseFlashId: number = 0;
 
-		await retryAsyncOnError(async () => {
-			options.debug("Waiting for done...");
+		try {
+			await retryAsyncOnError(async () => {
+				options.debug("Waiting for done...");
 
-			responseCode = (await dwd.readMemory(PARAM_RESPONSE_CODE, 4)).buffer.readInt32LE(0);
-			responseFlashId = (await dwd.readMemory(PARAM_RESPONSE_FLASH_ID, 4)).buffer.readUInt32LE(0);
+				responseCode = (await dwd.readMemory(PARAM_RESPONSE_CODE, 4)).buffer.readInt32LE(0);
+				responseFlashId = (await dwd.readMemory(PARAM_RESPONSE_FLASH_ID, 4)).buffer.readUInt32LE(0);
 
-			options.debug(sprintf("Code: %d (%s)", responseCode, PatchResponseCode[responseCode]));
-			options.debug(sprintf("FlashID: %08X", responseFlashId));
+				options.debug(sprintf("Code: %d (%s)", responseCode, PatchResponseCode[responseCode]));
+				options.debug(sprintf("FlashID: %08X", responseFlashId));
 
-			if (responseCode == PatchResponseCode.SUCCESS) {
-				options.debug("Success!!! Boot mode patched, now reboot phone.");
-			}
-
-			await new Promise((resolve) => setTimeout(resolve, 1000));
-		}, { max: 30 });
+				if (responseCode == PatchResponseCode.SUCCESS) {
+					options.debug("Success!!! Boot mode patched, now reboot phone.");
+				}
+			}, { max: 10, delay: 1000 });
+		} catch (e) {
+			options.debug(String(e));
+			options.debug("Error occurred when waiting response from unlocker. Please, reinstall battery and try again.");
+		}
 
 		if (!(responseCode == PatchResponseCode.FLASH_NOT_FOUND || responseCode == PatchResponseCode.FLASH_BUSY))
 			break;
