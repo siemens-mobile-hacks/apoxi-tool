@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sie-js/creampie':
-        specifier: ^1.0.2
-        version: 1.0.2
+        specifier: ^1.0.3
+        version: 1.0.3
       '@types/debug':
         specifier: ^4.1.12
         version: 4.1.12
@@ -418,8 +418,8 @@ packages:
     resolution: {integrity: sha512-F7xLJKsjGo2WuEWMSEO1SimRcOA+WtWICsY13r0ahx8s2SecPQH06338g28OT7cW7uRXI7oEQAk62qh5gHJW3g==}
     engines: {node: '>=20.0.0'}
 
-  '@sie-js/creampie@1.0.2':
-    resolution: {integrity: sha512-ljJxZI8lQ58nZNePrdnWoLWfDllk4xZEm2lCqpXUaZ5fyf7qBWsBh7tDWD8usIdkDKzKUTySpW9vaLaCm6t2BA==}
+  '@sie-js/creampie@1.0.3':
+    resolution: {integrity: sha512-NwJzIvCVXxbGuBlnNIqq3PVzmCznaow8LSWFDDfMnW9L8UhfSiNeZY7HBapc3PZzu8sD3aBDzwHCLwD+Mg7Tmg==}
 
   '@sie-js/serial@1.1.10':
     resolution: {integrity: sha512-X4V7zcJ+DUmUPHsChvzznTXiHSLfkTUfGPVeFG/eu5ifKcCPNIqkZ4RGwCQ5axj0l+XPdWcvNyqkNO++90pRkQ==}
@@ -960,7 +960,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sie-js/creampie@1.0.2': {}
+  '@sie-js/creampie@1.0.3': {}
 
   '@sie-js/serial@1.1.10(@serialport/stream@13.0.0)':
     dependencies:

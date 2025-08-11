@@ -1,7 +1,6 @@
 import { DWD } from "@sie-js/serial";
 import { sprintf } from "sprintf-js";
 import unlockerElf from "#src/data/unlocker.elf.js";
-import { loadELF } from "@sie-js/creampie";
 import { retryAsyncOnError } from "#src/utils/retry.js";
 
 const TCM_START = 0xFFFF0000;
@@ -51,6 +50,8 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 		options.debug("Boot already open! Unlock is not needed.");
 		return;
 	}
+
+	const { loadELF } = await import("@sie-js/creampie");
 
 	const bootMode = (await dwd.readMemory(BOOT_MODE, 4)).buffer.readUInt32LE(0);
 	options.debug(sprintf("Boot mode: %08X", bootMode));

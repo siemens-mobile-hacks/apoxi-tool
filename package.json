@@ -37,7 +37,7 @@
 		"#src/*": "./dist/src/*"
 	},
 	"dependencies": {
-		"@sie-js/creampie": "^1.0.2",
+		"@sie-js/creampie": "^1.0.3",
 		"@types/debug": "^4.1.12",
 		"chalk": "^5.5.0",
 		"cli-progress": "^3.12.0",
