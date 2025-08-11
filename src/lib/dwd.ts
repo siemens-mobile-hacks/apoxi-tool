@@ -31,7 +31,6 @@ export interface UnlockBootloaderOptions {
 }
 
 export async function isApoxiBootUnlocked(dwd: DWD) {
-	return false;
 	const bootMode = (await dwd.readMemory(BOOT_MODE, 4)).buffer.readUInt32LE(0);
 	if (bootMode == 0xFFFFFFFF) {
 		return true;
@@ -124,6 +123,8 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 
 			if (responseCode == PatchResponseCode.SUCCESS) {
 				options.debug("Success. Boot mode patched. Please reboot the phone.");
+			} else if (responseCode == PatchResponseCode.BOOT_ALREADY_OPEN) {
+				options.debug("Boot is already open. Unlock is not needed.");
 			} else {
 				options.debug("Unlocking failed!");
 			}
