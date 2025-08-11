@@ -48,7 +48,7 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 	const ramAddr = Number((BigInt(addrsel) & 0xFFFF0000n));
 
 	if (await isApoxiBootUnlocked(dwd)) {
-		options.debug("Boot already open! Unlock is not needed.");
+		options.debug("Boot is already open. Unlock is not needed.");
 		return;
 	}
 
@@ -57,13 +57,13 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 	const bootMode = (await dwd.readMemory(BOOT_MODE, 4)).buffer.readUInt32LE(0);
 	options.debug(sprintf("Boot mode: %08X", bootMode));
 
-	options.debug(sprintf("Ram: %08X, %dM", ramAddr, ramSize / 1024 / 1024));
-	options.debug("Searching empty ram block.... (this may take a while)");
+	options.debug(sprintf("RAM: %08X, %d MB", ramAddr, ramSize / 1024 / 1024));
+	options.debug("Searching for an empty RAM block... (this may take a while)");
 
 	let emptyRamBlock = 0;
 	for (let i = ramAddr; i < ramAddr + ramSize; i += 256 * 1024) {
 		if ((i % (1024 * 1024)) == 0)
-			options.debug(sprintf("RAM scan progress: %d Mb / %d Mb", (i - ramAddr) / 1024 / 1024, ramSize / 1024 / 1024));
+			options.debug(sprintf("RAM scan progress: %d MB / %d MB", (i - ramAddr) / 1024 / 1024, ramSize / 1024 / 1024));
 
 		const blockStart = await dwd.readMemory(i, 230);
 		if (blockStart.buffer.every((v) => v == 0)) {
@@ -78,7 +78,7 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 	if (!emptyRamBlock)
 		throw new Error("Empty RAM block not found!");
 
-	options.debug(sprintf("Found empty ram block: %08X", emptyRamBlock));
+	options.debug(sprintf("Found empty RAM block: %08X", emptyRamBlock));
 
 	const elf = loadELF(emptyRamBlock, unlockerElf);
 	for (let i = 0; i < 30; i++) {
@@ -87,7 +87,7 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 		if (check.buffer.toString("hex") != elf.image.toString("hex")) {
 			options.debug(check.buffer.toString("hex"));
 			options.debug(elf.image.toString("hex"));
-			throw new Error("Payload corrupted!!!");
+			throw new Error("Payload is corrupted.");
 		}
 
 		options.debug(sprintf("Patcher entry: %08X", elf.entry));
@@ -109,7 +109,7 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 			// fail is ok
 		}
 
-		options.debug("Waiting 5s for done...");
+		options.debug("Waiting 5 seconds to complete...");
 		await new Promise((resolve) => setTimeout(resolve, 5000));
 
 		// Flush
@@ -120,10 +120,10 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 			const responseFlashId = (await dwd.readMemory(PARAM_RESPONSE_FLASH_ID, 4)).buffer.readUInt32LE(0);
 
 			options.debug(sprintf("Code: %d (%s)", responseCode, PatchResponseCode[responseCode]));
-			options.debug(sprintf("FlashID: %08X", responseFlashId));
+			options.debug(sprintf("Flash ID: %08X", responseFlashId));
 
 			if (responseCode == PatchResponseCode.SUCCESS) {
-				options.debug("Success!!! Boot mode patched, now reboot phone.");
+				options.debug("Success. Boot mode patched. Please reboot the phone.");
 			} else {
 				options.debug("Unlocking failed!");
 			}
@@ -134,7 +134,7 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 			options.debug("Retrying...");
 		} catch (e) {
 			options.debug(String(e));
-			options.debug("Error occurred when waiting response from unlocker. Please, reinstall battery and try again.");
+			options.debug("An error occurred while waiting for a response from the unlocker. Please remove and reinstall the battery, then try again.");
 			break;
 		}
 	}

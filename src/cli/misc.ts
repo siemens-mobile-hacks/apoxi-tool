@@ -26,7 +26,7 @@ export const cliBruteforceDWDKeys: AppCommand<CLIBaseOptions> = async (options) 
 		format: ' [{bar}] {percentage}% | ETA: {eta}s | {speed} keys/s'
 	}, cliProgress.Presets.legacy);
 
-	console.log("Bruteforce key2...");
+	console.log("Brute-force key2...");
 	pb.start(0xFFFF, 0);
 	const possibleKeys = await dwd.bruteforceKey2({
 		onProgress: (e) => {
@@ -41,7 +41,7 @@ export const cliBruteforceDWDKeys: AppCommand<CLIBaseOptions> = async (options) 
 
 	const foundKeys: DWDKeys[] = [];
 	for (const key2 of possibleKeys) {
-		console.log(sprintf("Bruteforce key1 for key2=%04X", key2));
+		console.log(sprintf("Brute-force key1 for key2=%04X", key2));
 		const keys = await dwd.bruteforceKey1(key2);
 		if (keys != null)
 			foundKeys.push(keys);

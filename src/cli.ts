@@ -39,7 +39,7 @@ program
 
 program
 	.command('unlock-bootloader')
-	.description('Unlock APOXI bootloader (allow using V-Klay)')
+	.description('Unlock APOXI bootloader (allows using V-Klay)')
 	.action(createAppCommand(cliUnlockBoot));
 
 program
@@ -53,7 +53,7 @@ program
 
 program
 	.command('read-all-memory')
-	.description('Read and save phone memory (ALL available blocks)')
+	.description('Read and save all available phone memory blocks')
 	.option('-i, --include <blocks>', 'Include blocks (comma separated)', (v) => v.split(','), [])
 	.option('-e, --exclude <blocks>', 'Exclude blocks (comma separated)', (v) => v.split(','), [])
 	.option('-o, --output [dir]', 'Write output to directory')
@@ -69,7 +69,7 @@ program.command('list-ports')
 	.action(createAppCommand(cliListSerialPorts));
 
 program.command('bruteforce-dwd-keys')
-	.description('Bruteforce DWD keys')
+	.description('Brute-force DWD keys')
 	.action(createAppCommand(cliBruteforceDWDKeys));
 
 program.showSuggestionAfterError(true);

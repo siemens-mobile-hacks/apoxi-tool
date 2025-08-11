@@ -11,7 +11,7 @@ const USB_DEVICES = [
 ];
 
 export async function connectDWD(path: string, limitBaudrate: number, key: string): Promise<DWD> {
-	console.info(`Connecting to phone using port ${path}...`);
+	console.info(`Connecting to the phone using port ${path}...`);
 
 	const port = new AsyncSerialPort(new SerialPort({
 		path,
@@ -38,7 +38,7 @@ export async function connectDWD(path: string, limitBaudrate: number, key: strin
 	try {
 		await dwd.connect();
 	} catch (e) {
-		console.error(`Error while connecting to phone!`);
+		console.error(`Error while connecting to the phone!`);
 		await port.close();
 		throw e;
 	}

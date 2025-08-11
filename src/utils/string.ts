@@ -26,7 +26,7 @@ export function parseSize(value: string): number {
 
 export function formatSize(size: number): string {
 	if (size > 1024 * 1024) {
-		return +(size / 1024 / 1024).toFixed(2) + " Mb";
+		return +(size / 1024 / 1024).toFixed(2) + " MB";
 	} else {
 		return +(size / 1024).toFixed(2) + " kB";
 	}

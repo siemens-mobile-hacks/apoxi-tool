@@ -10,7 +10,7 @@ export const cliUnlockBoot: AppCommand<CLIBaseOptions> = async (options) => {
 	onCleanup(() => disconnectDWD(dwd));
 
 	if (await isApoxiBootUnlocked(dwd)) {
-		console.log("Boot already open! Unlock is not needed.");
+		console.log("Boot is already open. Unlock is not needed.");
 		return;
 	}
 
@@ -19,7 +19,7 @@ export const cliUnlockBoot: AppCommand<CLIBaseOptions> = async (options) => {
 			type: 'confirm',
 			name: 'confirm',
 			message: chalk.red([
-				`WARNING: Unlocking the APOXI bootloader WILL BREAK THE DEVICE and it may never work again.`,
+				`WARNING: Unlocking the APOXI bootloader MAY BREAK THE DEVICE and it may never work again.`,
 				'MAKE A FULL BACKUP BEFORE THE OPERATION.',
 				'Continue?'
 			].join('\n')),
