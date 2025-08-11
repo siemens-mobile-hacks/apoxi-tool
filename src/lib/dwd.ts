@@ -31,6 +31,7 @@ export interface UnlockBootloaderOptions {
 }
 
 export async function isApoxiBootUnlocked(dwd: DWD) {
+	return false;
 	const bootMode = (await dwd.readMemory(BOOT_MODE, 4)).buffer.readUInt32LE(0);
 	if (bootMode == 0xFFFFFFFF) {
 		return true;
@@ -79,54 +80,63 @@ export async function unlockApoxiBootloader(dwd: DWD, options: UnlockBootloaderO
 
 	options.debug(sprintf("Found empty ram block: %08X", emptyRamBlock));
 
-	const oldIrqHandler = (await dwd.readMemory(PRAM_IRQ_HANDLER, 4)).buffer.readUInt32LE(0);
-	options.debug(sprintf("Old SWI handler: %08X", oldIrqHandler))
-
 	const elf = loadELF(emptyRamBlock, unlockerElf);
-	await dwd.writeMemory(emptyRamBlock, elf.image);
-	const check = await dwd.readMemory(emptyRamBlock, elf.image.length);
-	if (check.buffer.toString("hex") != elf.image.toString("hex")) {
-		options.debug(check.buffer.toString("hex"));
-		options.debug(elf.image.toString("hex"));
-		throw new Error("Payload corrupted!!!");
-	}
-
-	options.debug(sprintf("Patcher entry: %08X", elf.entry));
-
-	const PATCHER_ADDR = elf.entry;
-	const PARAM_OLD_IRQ_HANDLER = PATCHER_ADDR + 4;
-	const PARAM_RESPONSE_CODE = PATCHER_ADDR + 8;
-	const PARAM_RESPONSE_FLASH_ID = PATCHER_ADDR + 12;
-
 	for (let i = 0; i < 30; i++) {
-		options.debug("Running patcher...");
-		await dwd.writeMemory(PARAM_OLD_IRQ_HANDLER, uint32(oldIrqHandler));
-		await dwd.writeMemory(PRAM_IRQ_HANDLER, uint32(PATCHER_ADDR));
+		await dwd.writeMemory(emptyRamBlock, elf.image);
+		const check = await dwd.readMemory(emptyRamBlock, elf.image.length);
+		if (check.buffer.toString("hex") != elf.image.toString("hex")) {
+			options.debug(check.buffer.toString("hex"));
+			options.debug(elf.image.toString("hex"));
+			throw new Error("Payload corrupted!!!");
+		}
 
-		let responseCode: number = PatchResponseCode.UNKNOWN;
-		let responseFlashId: number = 0;
+		options.debug(sprintf("Patcher entry: %08X", elf.entry));
+
+		const PATCHER_ADDR = elf.entry;
+		const PARAM_OLD_IRQ_HANDLER = PATCHER_ADDR + 4;
+		const PARAM_RESPONSE_CODE = PATCHER_ADDR + 8;
+		const PARAM_RESPONSE_FLASH_ID = PATCHER_ADDR + 12;
+
+		const oldIrqHandler = (await dwd.readMemory(PRAM_IRQ_HANDLER, 4)).buffer.readUInt32LE(0);
+		options.debug(sprintf("Old SWI handler: %08X", oldIrqHandler))
+
+		await dwd.writeMemory(PARAM_OLD_IRQ_HANDLER, uint32(oldIrqHandler));
+
+		options.debug("Running patcher...");
+		try {
+			await dwd.writeMemory(PRAM_IRQ_HANDLER, uint32(PATCHER_ADDR));
+		} catch (e) {
+			// fail is ok
+		}
+
+		options.debug("Waiting 5s for done...");
+		await new Promise((resolve) => setTimeout(resolve, 5000));
+
+		// Flush
+		await dwd.getSerialPort()?.read(1024, 100);
 
 		try {
-			await retryAsyncOnError(async () => {
-				options.debug("Waiting for done...");
+			const responseCode = (await dwd.readMemory(PARAM_RESPONSE_CODE, 4)).buffer.readInt32LE(0);
+			const responseFlashId = (await dwd.readMemory(PARAM_RESPONSE_FLASH_ID, 4)).buffer.readUInt32LE(0);
 
-				responseCode = (await dwd.readMemory(PARAM_RESPONSE_CODE, 4)).buffer.readInt32LE(0);
-				responseFlashId = (await dwd.readMemory(PARAM_RESPONSE_FLASH_ID, 4)).buffer.readUInt32LE(0);
+			options.debug(sprintf("Code: %d (%s)", responseCode, PatchResponseCode[responseCode]));
+			options.debug(sprintf("FlashID: %08X", responseFlashId));
 
-				options.debug(sprintf("Code: %d (%s)", responseCode, PatchResponseCode[responseCode]));
-				options.debug(sprintf("FlashID: %08X", responseFlashId));
+			if (responseCode == PatchResponseCode.SUCCESS) {
+				options.debug("Success!!! Boot mode patched, now reboot phone.");
+			} else {
+				options.debug("Unlocking failed!");
+			}
 
-				if (responseCode == PatchResponseCode.SUCCESS) {
-					options.debug("Success!!! Boot mode patched, now reboot phone.");
-				}
-			}, { max: 10, delay: 1000 });
+			if (!(responseCode == PatchResponseCode.FLASH_NOT_FOUND || responseCode == PatchResponseCode.FLASH_BUSY))
+				break;
+
+			options.debug("Retrying...");
 		} catch (e) {
 			options.debug(String(e));
 			options.debug("Error occurred when waiting response from unlocker. Please, reinstall battery and try again.");
-		}
-
-		if (!(responseCode == PatchResponseCode.FLASH_NOT_FOUND || responseCode == PatchResponseCode.FLASH_BUSY))
 			break;
+		}
 	}
 }
 
