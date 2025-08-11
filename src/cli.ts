@@ -6,7 +6,7 @@ import debug from "debug";
 import { getDefaultPort } from "#src/utils/serial.js";
 import { cliBruteforceDWDKeys, cliListSerialPorts } from "#src/cli/misc.js";
 import { cliUnlockBoot } from "#src/cli/unlock.js";
-import { readPackage } from "read-pkg";
+import { getVersion } from "#src/utils/version.js";
 
 export interface CLIBaseOptions {
 	port: string;
@@ -14,12 +14,11 @@ export interface CLIBaseOptions {
 	key: string;
 }
 
-const pkg = await readPackage();
 const DEFAULT_PORT = await getDefaultPort();
 
 program
 	.name("apoxi-tool")
-	.version(pkg.version, '-v, --version')
+	.version(getVersion(), '-v, --version')
 	.description('CLI tool for APOXI phones.')
 	.option('-p, --port <port>', 'serial port name', DEFAULT_PORT)
 	.option('-b, --baudrate <baudrate>', 'limit maximum baudrate (0 - use maximum)', '0')
