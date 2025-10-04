@@ -209,8 +209,8 @@ function getMemoryRegionByAddrAndSize(regions: DWDMemoryRegion[], addr: number, 
 }
 
 async function getPhoneInfo(dwd: DWD): Promise<PhoneInfo> {
-	const regions = await dwd.getMemoryRegions();
 	const swInfo = await dwd.getSWVersion();
 	console.log(`Detected phone: ${swInfo.sw} (${swInfo.cpu})`);
+	const regions = await dwd.getMemoryRegions();
 	return { name: swInfo.sw, regions };
 }
