@@ -2,12 +2,12 @@
 
 # SUMMARY
 
-A console utility for working with APOXI-based phones (SGold/SGold2). [Read more about APOXI.](https://siemens-mobile-hacks.github.io/docs/panasonic/)
+A console utility for working with APOXI-based phones (SGold/SGold2). [Read more about APOXI.](https://siepatch.dev/docs/panasonic/)
 
 Works on all major operating systems: Linux, macOS, and Windows.
 
 > [!NOTE]
-> All these functions are also available from the browser: [Web Tools](https://siemens-mobile-hacks.github.io/web-tools/).
+> All these functions are also available from the browser: [Web Tools]([https://siemens-mobile-hacks.github.io/web-tools/](https://tools.siepatch.dev)).
 
 # INSTALL
 
