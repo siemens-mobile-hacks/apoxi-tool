@@ -5,19 +5,19 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@serialport/bindings-cpp': npm:@sie-js/node-serialport-bindings-cpp
+  '@serialport/bindings-cpp': npm:@sie-js/node-serialport-bindings-cpp@^0.0.2
   debug: ^4.4.3
 
 importers:
 
   .:
     dependencies:
+      '@serialport/bindings-cpp':
+        specifier: npm:@sie-js/node-serialport-bindings-cpp@^0.0.2
+        version: '@sie-js/node-serialport-bindings-cpp@0.0.2'
       '@sie-js/creampie':
         specifier: ^1.0.3
         version: 1.0.3
-      '@sie-js/node-serialport-bindings-cpp':
-        specifier: ^0.0.2
-        version: 0.0.2
       '@types/debug':
         specifier: ^4.1.13
         version: 4.1.13

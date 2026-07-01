@@ -2,5 +2,5 @@ packages:
   - .
 
 overrides:
-  '@serialport/bindings-cpp': 'npm:@sie-js/node-serialport-bindings-cpp'
+  '@serialport/bindings-cpp': '$@serialport/bindings-cpp'
   'debug': '$debug'
