@@ -1,6 +1,7 @@
 .idea
 *.bin
 *.data
+npm-shrinkwrap.json
 
 # Logs
 logs
